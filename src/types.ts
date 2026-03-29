@@ -149,7 +149,7 @@ export const AlbumFull = z
 		albumId: z.string(),
 		playlistId: z.string(),
 		name: z.string(),
-		artist: ArtistBasic,
+		artists: z.array(ArtistBasic),
 		year: z.nullable(z.number()),
 		thumbnails: z.array(ThumbnailFull),
 		songs: z.array(SongDetailed),

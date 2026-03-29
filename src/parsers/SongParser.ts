@@ -127,15 +127,24 @@ export default class SongParser {
 		albumBasic: AlbumBasic,
 		thumbnails: ThumbnailFull[],
 	): SongDetailed {
-		const title = traverseList(item, "flexColumns", "runs").find(isTitle)
+		const columns = traverseList(item, "flexColumns", "runs").flat();
+		const title = columns.find(isTitle)
 		const duration = traverseList(item, "fixedColumns", "runs").find(isDuration)
+
+		const artistRuns = columns.filter(isArtist)
+		const artists = artistRuns.length > 0
+            ? artistRuns.map(a => ({
+                  name: traverseString(a, "text"),
+                  artistId: traverseString(a, "browseId") || null,
+              }))
+            : [artistBasic]
 
 		return checkType(
 			{
 				type: "SONG",
 				videoId: traverseString(item, "playlistItemData", "videoId"),
 				name: traverseString(title, "text"),
-				artist: artistBasic,
+				artists,
 				album: albumBasic,
 				duration: Parser.parseDuration(duration?.text),
 				thumbnails,
