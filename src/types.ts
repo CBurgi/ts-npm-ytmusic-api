@@ -31,7 +31,7 @@ export const SongDetailed = z
 		type: z.literal("SONG"),
 		videoId: z.string(),
 		name: z.string(),
-		artist: ArtistBasic,
+		artists: z.array(ArtistBasic),
 		album: z.nullable(AlbumBasic),
 		duration: z.nullable(z.number()),
 		thumbnails: z.array(ThumbnailFull),
